@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mental Health Support Chatbot</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #7ed321;
+            --accent-color: #f5a623;
+            --danger-color: #d0021b;
+            --text-dark: #333333;
+            --text-light: #666666;
+            --bg-light: #f8f9fa;
+            --bg-white: #ffffff;
+            --border-color: #e0e0e0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .chat-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--bg-white);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            overflow: hidden;
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, var(--primary-color), #357abd);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .chat-header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .chat-subtitle {
+            opacity: 0.9;
+            margin-top: 5px;
+            font-size: 0.9rem;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: var(--secondary-color);
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: var(--bg-light);
+        }
+
+        .message {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .message.user {
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin: 0 10px;
+        }
+
+        .message.user .message-avatar {
+            background: var(--primary-color);
+        }
+
+        .message.bot .message-avatar {
+            background: var(--secondary-color);
+        }
+
+        .message-content {
+            max-width: 70%;
+            padding: 15px 20px;
+            border-radius: 20px;
+            position: relative;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .message.user .message-content {
+            background: var(--primary-color);
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+
+        .message.bot .message-content {
+            background: white;
+            color: var(--text-dark);
+            border-bottom-left-radius: 5px;
+        }
+
+        .message-time {
+            font-size: 0.75rem;
+            opacity: 0.7;
+            margin-top: 5px;
+        }
+
+        .crisis-alert {
+            background: linear-gradient(135deg, var(--danger-color), #ff4757);
+            color: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(208, 2, 27, 0.3);
+        }
+
+        .crisis-alert .crisis-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .crisis-alert .crisis-title i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        .crisis-resources {
+            background: rgba(255,255,255,0.2);
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        .crisis-resources h6 {
+            margin: 0 0 8px 0;
+            font-weight: bold;
+        }
+
+        .crisis-resources .resource-item {
+            margin: 5px 0;
+        }
+
+        .chat-input-container {
+            padding: 20px;
+            background: white;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .chat-input {
+            border: 2px solid var(--border-color);
+            border-radius: 25px;
+            padding: 15px 60px 15px 20px;
+            font-size: 1rem;
+            resize: none;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .chat-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+        }
+
+        .send-button {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--primary-color);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .send-button:hover:not(:disabled) {
+            background: #357abd;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .send-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .typing-indicator {
+            display: none;
+            align-items: center;
+            margin: 10px 0;
+            opacity: 0.7;
+        }
+
+        .typing-indicator.active {
+            display: flex;
+        }
+
+        .typing-dots {
+            display: flex;
+            align-items: center;
+            margin-left: 15px;
+        }
+
+        .typing-dots span {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            margin: 0 2px;
+            animation: typing 1.4s infinite ease-in-out both;
+        }
+
+        .typing-dots span:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dots span:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes typing {
+            0%, 80%, 100% {
+                transform: scale(0);
+                opacity: 0.5;
+            }
+            40% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .feedback-container {
+            background: var(--bg-light);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .feedback-container.active {
+            display: block;
+        }
+
+        .feedback-stars {
+            display: flex;
+            justify-content: center;
+            margin: 10px 0;
+        }
+
+        .feedback-stars .star {
+            font-size: 1.5rem;
+            color: #ddd;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            margin: 0 2px;
+        }
+
+        .feedback-stars .star:hover,
+        .feedback-stars .star.active {
+            color: var(--accent-color);
+        }
+
+        .system-status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 15px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .enhanced-badge {
+            background: var(--secondary-color);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            margin-left: 5px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .chat-container {
+                height: 90vh;
+                border-radius: 10px;
+            }
+            
+            .message-content {
+                max-width: 85%;
+            }
+            
+            .chat-header h1 {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* Accessibility improvements */
+        .visually-hidden {
+            position: absolute !important;
+            width: 1px !important;
+            height: 1px !important;
+            padding: 0 !important;
+            margin: -1px !important;
+            overflow: hidden !important;
+            clip: rect(0,0,0,0) !important;
+            white-space: nowrap !important;
+            border: 0 !important;
+        }
+
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-light: #1a1a1a;
+                --bg-white: #2d2d2d;
+                --text-dark: #ffffff;
+                --text-light: #cccccc;
+                --border-color: #404040;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- System Status -->
+    <div class="system-status">
+        <span class="status-indicator"></span>
+        Online
+        {% if enhanced_mode %}
+            <span class="enhanced-badge">Enhanced</span>
+        {% endif %}
+    </div>
+
+    <!-- Main Chat Container -->
+    <div class="chat-container">
+        <!-- Chat Header -->
+        <div class="chat-header">
+            <h1>
+                <i class="fas fa-heart"></i>
+                Mental Health Support
+            </h1>
+            <div class="chat-subtitle">
+                Safe, confidential, and available 24/7
+            </div>
+        </div>
+
+        <!-- Chat Messages -->
+        <div class="chat-messages" id="chatMessages">
+            <!-- Welcome Message -->
+            <div class="message bot">
+                <div class="message-avatar">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="message-content">
+                    <div class="message-text">
+                        Hello! I'm here to provide mental health support and a safe space to talk. 
+                        Everything you share with me is confidential. How are you feeling today?
+                    </div>
+                    <div class="message-time" id="welcomeTime"></div>
+                </div>
+            </div>
+
+            <!-- Typing Indicator -->
+            <div class="typing-indicator" id="typingIndicator">
+                <div class="message-avatar">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="typing-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Input -->
+        <div class="chat-input-container">
+            <div class="input-group">
+                <textarea 
+                    class="form-control chat-input" 
+                    id="messageInput" 
+                    placeholder="Type your message here... Press Enter to send"
+                    rows="1"
+                    maxlength="1000"
+                    aria-label="Type your message"></textarea>
+                <button 
+                    class="send-button" 
+                    id="sendButton" 
+                    type="button"
+                    aria-label="Send message">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+            
+            <!-- Character Counter -->
+            <div class="text-end mt-2">
+                <small class="text-muted">
+                    <span id="charCount">0</span>/1000 characters
+                </small>
+            </div>
+        </div>
+
+        <!-- Feedback Container -->
+        <div class="feedback-container" id="feedbackContainer">
+            <h6 class="text-center mb-3">How was this conversation?</h6>
+            <div class="feedback-stars" id="feedbackStars">
+                <span class="star" data-rating="1">★</span>
+                <span class="star" data-rating="2">★</span>
+                <span class="star" data-rating="3">★</span>
+                <span class="star" data-rating="4">★</span>
+                <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="text-center mt-3">
+                <button class="btn btn-sm btn-outline-secondary" id="skipFeedback">Skip</button>
+                <button class="btn btn-sm btn-primary" id="submitFeedback" disabled>Submit</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Crisis Modal -->
+    <div class="modal fade" id="crisisModal" tabindex="-1" aria-labelledby="crisisModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="crisisModalLabel">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        Crisis Resources
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="crisisModalBody">
+                    <!-- Crisis resources will be populated here -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <a href="tel:988" class="btn btn-danger">
+                        <i class="fas fa-phone me-2"></i>Call 988 Now
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Chat Application
+        class MentalHealthChatbot {
+            constructor() {
+                this.sessionId = null;
+                this.isTyping = false;
+                this.selectedRating = 0;
+                this.messageCount = 0;
+                
+                this.initializeElements();
+                this.bindEvents();
+                this.createSession();
+                this.updateWelcomeTime();
+            }
+
+            initializeElements() {
+                this.chatMessages = document.getElementById('chatMessages');
+                this.messageInput = document.getElementById('messageInput');
+                this.sendButton = document.getElementById('sendButton');
+                this.typingIndicator = document.getElementById('typingIndicator');
+                this.charCount = document.getElementById('charCount');
+                this.feedbackContainer = document.getElementById('feedbackContainer');
+                this.feedbackStars = document.getElementById('feedbackStars');
+                this.submitFeedbackBtn = document.getElementById('submitFeedback');
+                this.skipFeedbackBtn = document.getElementById('skipFeedback');
+                this.crisisModal = new bootstrap.Modal(document.getElementById('crisisModal'));
+            }
+
+            bindEvents() {
+                // Send message events
+                this.sendButton.addEventListener('click', () => this.sendMessage());
+                this.messageInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        this.sendMessage();
+                    }
+                });
+
+                // Auto-resize textarea
+                this.messageInput.addEventListener('input', () => {
+                    this.updateCharCount();
+                    this.autoResizeTextarea();
+                });
+
+                // Feedback events
+                this.feedbackStars.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('star')) {
+                        this.selectRating(parseInt(e.target.dataset.rating));
+                    }
+                });
+
+                this.submitFeedbackBtn.addEventListener('click', () => this.submitFeedback());
+                this.skipFeedbackBtn.addEventListener('click', () => this.hideFeedback());
+            }
+
+            async createSession() {
+                try {
+                    const response = await fetch('/session', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            user_id: 'anonymous'
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        this.sessionId = data.session_id;
+                        console.log('Session created:', this.sessionId);
+                    }
+                } catch (error) {
+                    console.error('Failed to create session:', error);
+                }
+            }
+
+            async sendMessage() {
+                const message = this.messageInput.value.trim();
+                if (!message || this.isTyping) return;
+
+                this.displayMessage(message, 'user');
+                this.messageInput.value = '';
+                this.updateCharCount();
+                this.showTypingIndicator();
+
+                try {
+                    const response = await fetch('/chat', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            message: message,
+                            session_id: this.sessionId
+                        })
+                    });
+
+                    const data = await response.json();
+                    
+                    if (response.ok) {
+                        this.hideTypingIndicator();
+                        this.displayMessage(data.response, 'bot', {
+                            isCrisis: data.is_crisis,
+                            crisisResources: data.crisis_resources,
+                            confidence: data.confidence,
+                            processingTime: data.processing_time_ms
+                        });
+
+                        if (data.is_crisis && data.crisis_resources) {
+                            this.showCrisisModal(data.crisis_resources);
+                        }
+
+                        this.messageCount++;
+                        
+                        // Show feedback after several messages
+                        if (this.messageCount % 5 === 0) {
+                            setTimeout(() => this.showFeedback(), 2000);
+                        }
+                    } else {
+                        this.hideTypingIndicator();
+                        this.displayMessage(data.response || 'Sorry, I encountered an error. Please try again.', 'bot', { isError: true });
+                    }
+                } catch (error) {
+                    this.hideTypingIndicator();
+                    console.error('Error:', error);
+                    this.displayMessage('I apologize, but I\'m having trouble connecting. Please try again in a moment.', 'bot', { isError: true });
+                }
+            }
+
+            displayMessage(text, sender, options = {}) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${sender}`;
+                
+                const avatarDiv = document.createElement('div');
+                avatarDiv.className = 'message-avatar';
+                avatarDiv.innerHTML = sender === 'user' ? '<i class="fas fa-user"></i>' : '<i class="fas fa-robot"></i>';
+
+                const contentDiv = document.createElement('div');
+                contentDiv.className = 'message-content';
+
+                const textDiv = document.createElement('div');
+                textDiv.className = 'message-text';
+                textDiv.textContent = text;
+
+                const timeDiv = document.createElement('div');
+                timeDiv.className = 'message-time';
+                timeDiv.textContent = new Date().toLocaleTimeString();
+
+                contentDiv.appendChild(textDiv);
+                contentDiv.appendChild(timeDiv);
+
+                // Add crisis alert if needed
+                if (options.isCrisis) {
+                    const crisisAlert = document.createElement('div');
+                    crisisAlert.className = 'crisis-alert';
+                    crisisAlert.innerHTML = `
+                        <div class="crisis-title">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            Crisis Detected - Immediate Help Available
+                        </div>
+                        <div>If you're in immediate danger, please call emergency services or the crisis hotline: <strong>988</strong></div>
+                    `;
+                    contentDiv.appendChild(crisisAlert);
+                }
+
+                messageDiv.appendChild(avatarDiv);
+                messageDiv.appendChild(contentDiv);
+
+                this.chatMessages.appendChild(messageDiv);
+                this.scrollToBottom();
+            }
+
+            showTypingIndicator() {
+                this.isTyping = true;
+                this.typingIndicator.classList.add('active');
+                this.sendButton.disabled = true;
+                this.scrollToBottom();
+            }
+
+            hideTypingIndicator() {
+                this.isTyping = false;
+                this.typingIndicator.classList.remove('active');
+                this.sendButton.disabled = false;
+            }
+
+            showCrisisModal(resources) {
+                const modalBody = document.getElementById('crisisModalBody');
+                let resourcesHtml = '<div class="crisis-resources"><h6>Immediate Help:</h6>';
+                
+                if (resources.global) {
+                    Object.entries(resources.global).forEach(([key, resource]) => {
+                        resourcesHtml += `
+                            <div class="resource-item">
+                                <strong>${resource.description || key}:</strong> ${resource.number}
+                                ${resource.text ? `<br><small>${resource.text}</small>` : ''}
+                            </div>
+                        `;
+                    });
+                }
+                
+                resourcesHtml += '</div>';
+                modalBody.innerHTML = resourcesHtml;
+                this.crisisModal.show();
+            }
+
+            showFeedback() {
+                this.feedbackContainer.classList.add('active');
+                this.scrollToBottom();
+            }
+
+            hideFeedback() {
+                this.feedbackContainer.classList.remove('active');
+            }
+
+            selectRating(rating) {
+                this.selectedRating = rating;
+                const stars = this.feedbackStars.querySelectorAll('.star');
+                stars.forEach((star, index) => {
+                    if (index < rating) {
+                        star.classList.add('active');
+                    } else {
+                        star.classList.remove('active');
+                    }
+                });
+                this.submitFeedbackBtn.disabled = false;
+            }
+
+            async submitFeedback() {
+                if (!this.selectedRating) return;
+
+                try {
+                    await fetch('/feedback', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            session_id: this.sessionId,
+                            score: this.selectedRating / 5.0,
+                            text: ''
+                        })
+                    });
+                    
+                    this.hideFeedback();
+                    this.displayMessage('Thank you for your feedback!', 'bot');
+                } catch (error) {
+                    console.error('Failed to submit feedback:', error);
+                }
+            }
+
+            updateCharCount() {
+                const count = this.messageInput.value.length;
+                this.charCount.textContent = count;
+                
+                if (count > 800) {
+                    this.charCount.style.color = 'var(--danger-color)';
+                } else if (count > 600) {
+                    this.charCount.style.color = 'var(--accent-color)';
+                } else {
+                    this.charCount.style.color = '';
+                }
+            }
+
+            autoResizeTextarea() {
+                this.messageInput.style.height = 'auto';
+                this.messageInput.style.height = Math.min(this.messageInput.scrollHeight, 120) + 'px';
+            }
+
+            scrollToBottom() {
+                setTimeout(() => {
+                    this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+                }, 100);
+            }
+
+            updateWelcomeTime() {
+                const welcomeTime = document.getElementById('welcomeTime');
+                if (welcomeTime) {
+                    welcomeTime.textContent = new Date().toLocaleTimeString();
+                }
+            }
+        }
+
+        // Initialize the chatbot when the DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new MentalHealthChatbot();
+        });
+    </script>
+</body>
+</html>

@@ -1,55 +1,365 @@
-# Emotionally-Intelligent-Chatbot-for-Mental-Healthcare-and-suicide-prevention
-To provide a free service of interaction with a machine, the objective of “Emotionally Aware Chatbot” is to provide mental healthcare to those who are mentally-ill anywhere and anytime. It raises the question of what role, if any, the chatbot should play in suicide prevention. With this chatbot, we expect to reach as many mentally-ill people as possible by hosting this on web domains of known hospitals or counselors. If it is easy to detect mental health issues at the correct time and provide suitable help, it might save precious lives. If integrated with the hospital systems, this would provide an effective way to automate the work.
+# Emotionally-Intelligent Chatbot for Mental Healthcare
 
-Software Used
-1.	“VS” Code: Visual Studio Code was the code used for most part of the project.
+A sophisticated, AI-powered mental healthcare chatbot designed to provide empathetic support, crisis detection, and personalized assistance for mental health and suicide prevention.
 
-2.	Sublimetext Code Editor: Initial code development was done using sublime text editor that helped in formatting the python code & rightly placing it before moving to the “VS” code.
+## 🌟 Features
 
-3.	Python: The Artificial Intelligent Algorithms used in “Sentiment Analysis” that is the “Random Forest Classifier” and the “Logistic Regression Classifier” were coded using python. There were several Python packages used in the creation of the project as listed below:
+### Core Functionality
+- **Intelligent Conversation Management**: Advanced NLP with sentiment analysis and emotion detection
+- **Crisis Detection & Intervention**: Real-time identification of suicidal ideation with immediate resource provision
+- **Session Management**: Secure, persistent conversation history with encryption
+- **Continuous Learning**: RLHF (Reinforcement Learning from Human Feedback) for improved responses
+- **Safety Protocols**: Multi-layered safety measures with human oversight integration
 
-4.	Csv Files: Data from the extracted from the datasets which are stored as csv files. The 2 datasets that have been imported in our project are “labelledData.csv” on which the random forest algorithm has been applied and the other “emotion.csv” on which logistic regression algorithm has been used.
+### Advanced Capabilities
+- **Transformer-based NLP**: Uses RoBERTa, BERT, and other state-of-the-art models
+- **Semantic Similarity**: Context-aware response matching
+- **Personalization**: Adaptive responses based on user interaction patterns
+- **Real-time Analytics**: Session monitoring and crisis event tracking
+- **Multi-modal Support**: Text-based interaction with planned voice integration
 
-5.	Google Form: A google form had been generated in order to collect major healthcare issues faced by the people in general. We got responses from many people and through it we could classify our intents as depression, anxiety, paranoia, sleeping disorder, substance abuse and personality disorder. Most of the corner cases problems are also covered in these. 
+### Web Interface
+- **Modern UI/UX**: Responsive, accessible design with WCAG compliance
+- **Real-time Chat**: WebSocket-enabled instant messaging
+- **Crisis Support Modal**: Immediate access to emergency resources
+- **Admin Dashboard**: Analytics and monitoring for healthcare providers
+- **Mobile-First**: Optimized for all device types
 
-6.	Python environment setup packages:
-Venv
+## 🚀 Quick Start
 
-7.	Python packages for Data-Retrieval: (Used when the bag of words are processed using the Random forest classifier)
-BeautifulSoup4
+### Prerequisites
+- Python 3.7+ (recommended: 3.9+)
+- Virtual environment (recommended)
+- 4GB+ RAM for full functionality
 
-8.	Python packages used in the given project:
-a.	Pandas: It is used to retrieve data from the dataset into the data frame.
-b.	Numpy: N-dimensional array for numerical computation
-c.	Sci-kit learn: Python modules for machine learning and data mining.
-d.	Matplotlib: 2D Plotting library for Python
-e.	Re: It is used for doing Regular Expression pattern matching in Python.
-f.	Time: It is used to work with real-time data in Python.
-g.	Spacy: It is used to do entity extraction and intent classification by importing the specific modules.
-h.	Nltk: Natural language toolkit.
+### Installation
 
-9.	Python packages for Data-Cleansing: (Used when the bag of words are processed using the Random forest classifier)
-StopWords
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/yourusername/Emotionally-Intelligent-Chatbot-for-Mental-Healthcare-and-suicide-prevention.git
+   cd Emotionally-Intelligent-Chatbot-for-Mental-Healthcare-and-suicide-prevention
+   ```
 
+2. **Create and activate virtual environment:**
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
 
+3. **Install dependencies:**
+   ```bash
+   # Option 1: Quick install (basic functionality)
+   pip install flask flask-cors numpy pandas scikit-learn
+   
+   # Option 2: Full install (all features)
+   pip install -r requirements.txt
+   
+   # Option 3: Use installation script
+   python install_dependencies.py
+   ```
 
-Instructions to execute the code:
-I.	Python Environment Setup:
-1.	Install “Anaconda PROMPT”.
-2.	Create an environment for the project to install all the python libraries separately. The following command creates a virtual environment for the project. Run the command in the terminal in the directory you want to create the virtual environment.
-python3 -m venv tutorial-env
-tutorial-env\Scripts\activate.bat
-3.	The above two commands create and start the virtual environment.
-4.	Install the required packages using the pip command in that virtual environment.
-pip install pandas as pd
-pip install time
-pip install re
-pip install -U scikit-learn
-python -m pip install -U pip
-python -m pip install -U matplotlib
-pip install spacy
-5.	After installation of all the libraries the python code can be executed normally in any python code as in VS Code.
-6. Run Anaconda Prompt and give the following commands to get started with the code execution:
->(Type the name of the directory or disk where the project is saved, for ex if saved in    “D” disk then type “d:” or “D:” )
->cd(name_of _the_directory)
->py(name_of_the_python_file)
+4. **Run the application:**
+   ```bash
+   # Run the web application
+   python web_app.py
+   ```
+
+5. **Access the chatbot:**
+   Open your browser and navigate to `http://localhost:5000`
+
+## 📁 Project Structure
+
+```
+Emotionally-Intelligent-Chatbot-for-Mental-Healthcare-and-suicide-prevention/
+├── web_app.py                     # Full-featured web application
+├── chatbot.py                     # Core chatbot with advanced features
+├── nlp.py                         # NLP processing with transformers
+├── session_manager.py             # Session management and persistence
+├── continuous_learning.py         # RLHF and adaptive learning
+├── config.py                      # Configuration management
+├── setup.py                       # Installation and setup utilities
+├── install_dependencies.py       # Automated dependency installer
+├── requirements.txt               # Python package requirements
+├── templates/
+│   └── chat.html                  # Web interface template
+├── static/                        # Static web assets
+├── data/                          # Training data and models
+└── docs/                          # Documentation
+```
+
+## 🧠 Architecture
+
+### Core Components
+
+#### 1. Enhanced Chatbot (`chatbot.py`)
+- **Response Generation**: Context-aware, empathetic responses
+- **Crisis Detection**: Multi-layered safety analysis
+- **Integration Hub**: Coordinates all system components
+
+#### 2. Advanced NLP (`nlp.py`)
+- **Sentiment Analysis**: RoBERTa-based emotion detection
+- **Intent Classification**: User intention understanding
+- **Safety Protocols**: Crisis intervention triggers
+
+#### 3. Session Management (`session_manager.py`)
+- **Secure Storage**: Encrypted conversation history
+- **Analytics**: Real-time session monitoring
+- **Redis Integration**: High-performance caching
+
+#### 4. Continuous Learning (`continuous_learning.py`)
+- **RLHF Implementation**: Human feedback integration
+- **Adaptive Responses**: Personalized conversation improvement
+- **Ethics Safeguards**: Responsible AI learning
+
+## ⚙️ Configuration
+
+The system uses a hierarchical configuration system in `config.py`:
+
+```python
+# Basic configuration
+from config import config
+
+# Database settings
+config.database.sessions_db = 'sessions.db'
+config.database.redis_enabled = False
+
+# NLP settings
+config.nlp.use_advanced_nlp = True
+config.nlp.sentiment_model = 'cardiffnlp/twitter-roberta-base-sentiment-latest'
+
+# Safety settings
+config.safety.crisis_detection_threshold = 0.6
+config.safety.auto_escalate_threshold = 0.8
+```
+
+### Environment Variables
+
+```bash
+export SECRET_KEY=your-secret-key
+export REDIS_URL=redis://localhost:6379
+export OPENAI_API_KEY=your-openai-key  # Optional
+export DEBUG=True  # Development only
+```
+
+## 🔒 Safety & Ethics
+
+### Crisis Detection
+- **Multi-layer Analysis**: Keyword, semantic, and ML-based detection
+- **Immediate Response**: Automated crisis resource provision
+- **Human Escalation**: Integration with mental health professionals
+- **Logging & Monitoring**: All crisis events are securely logged
+
+### Data Privacy
+- **Encryption**: All conversations encrypted at rest and in transit
+- **Anonymization**: User data anonymized for analytics
+- **GDPR Compliance**: Full data protection regulation compliance
+- **Audit Trails**: Complete activity logging for accountability
+
+### Ethical AI
+- **Bias Mitigation**: Regular model auditing and bias testing
+- **Transparency**: Clear AI decision explanations
+- **Human Oversight**: Mental health professional review system
+- **Continuous Monitoring**: Real-time safety metric tracking
+
+## 🧪 Testing
+
+### Unit Tests
+```bash
+python -m pytest tests/
+```
+
+### Integration Tests
+```bash
+python -m pytest tests/integration/
+```
+
+### Safety Tests
+```bash
+python -m pytest tests/safety/
+```
+
+### Model Evaluation
+```bash
+python model_evaluation.py
+```
+
+## 🔬 Model Performance
+
+Our mental health chatbot uses advanced machine learning models with rigorous evaluation metrics to ensure reliable performance in critical mental health scenarios.
+
+### Crisis Detection Performance
+
+The system's crisis detection capabilities are evaluated using ROC curves and confusion matrices to ensure high accuracy in identifying users who may need immediate help.
+
+#### ROC Curve - Crisis Detection
+![Crisis Detection ROC Curve](roc_curve_crisis_detections.png)
+
+This ROC curve demonstrates the model's ability to distinguish between crisis and non-crisis situations, with an AUC score showing excellent discriminative performance.
+
+#### Health Classification Performance  
+![Health Classification ROC Curve](roc_curve_health_classification.png)
+
+The health classification model shows strong performance in categorizing different mental health states and conversation contexts.
+
+#### Confusion Matrix
+![Confusion Matrix](confusion_matrix.png)
+
+The confusion matrix provides detailed insights into the model's classification accuracy across different mental health categories, showing both correct predictions and areas for improvement.
+
+### Evaluation Metrics
+- **Precision**: High precision ensures fewer false positives in crisis detection
+- **Recall**: High recall ensures we don't miss users who need help
+- **F1-Score**: Balanced performance measure
+- **AUC**: Area Under Curve for overall model discrimination ability
+
+Run the evaluation script to generate updated performance metrics and visualizations:
+```bash
+python model_evaluation.py
+```
+
+## 📊 Monitoring & Analytics
+
+### Built-in Analytics
+- **Session Metrics**: Duration, message count, sentiment trends
+- **Crisis Events**: Detection frequency, response effectiveness
+- **Learning Progress**: Model improvement tracking
+- **Performance**: Response time, system health
+
+### External Integration
+- **Grafana**: Real-time dashboard visualization
+- **Prometheus**: Metrics collection and alerting
+- **ELK Stack**: Log analysis and search
+
+## 🚀 Deployment
+
+### Development
+```bash
+python web_app.py
+```
+
+### Production
+```bash
+# Using Gunicorn
+pip install gunicorn
+gunicorn -w 4 -b 0.0.0.0:5000 web_app:app
+
+# Using Docker
+docker build -t mental-health-chatbot .
+docker run -p 5000:5000 mental-health-chatbot
+```
+
+### Cloud Deployment
+- **AWS**: ECS, Lambda, or EC2 deployment guides
+- **Google Cloud**: App Engine or GKE deployment
+- **Azure**: Web Apps or Container Instances
+- **Heroku**: One-click deployment support
+
+## 📚 Usage Examples
+
+### Basic Chat Interaction
+```python
+from chatbot import EnhancedMentalHealthChatbot
+
+chatbot = EnhancedMentalHealthChatbot()
+response = chatbot.process_message("I'm feeling really anxious today")
+print(response['response'])
+```
+
+### Crisis Detection
+```python
+# The system automatically detects crisis situations
+message = "I don't see any point in living anymore"
+response = chatbot.process_message(message)
+if response['crisis_detected']:
+    print("Crisis intervention activated")
+    print(response['emergency_contacts'])
+```
+
+### Session Management
+```python
+from session_manager import EnhancedSessionManager
+
+session_mgr = EnhancedSessionManager()
+session_id = session_mgr.create_session()
+session_data = session_mgr.get_session(session_id)
+```
+
+## 🔧 Troubleshooting
+
+### Common Issues
+
+1. **Import Errors**: Ensure virtual environment is activated and dependencies installed
+2. **Memory Issues**: Reduce model size in config or use basic mode
+3. **Performance**: Enable Redis caching for better response times
+4. **CORS Issues**: Check CORS configuration in web app
+
+### Debug Mode
+```bash
+export FLASK_DEBUG=1
+export LOG_LEVEL=DEBUG
+python web_app.py
+```
+
+### Log Files
+- Application logs: `chatbot.log`
+- Error logs: `error.log`
+- Crisis events: `crisis_events.log`
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
+
+### Development Setup
+1. Fork the repository
+2. Create a feature branch
+3. Install development dependencies: `pip install -r requirements-dev.txt`
+4. Run tests: `pytest`
+5. Submit a pull request
+
+### Code Standards
+- **PEP 8**: Python code styling
+- **Type Hints**: All functions must include type annotations
+- **Documentation**: Comprehensive docstrings required
+- **Testing**: Minimum 80% test coverage
+
+## 📜 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🆘 Emergency Resources
+
+### United States
+- **988 Suicide & Crisis Lifeline**: Call or text 988
+- **Crisis Text Line**: Text HOME to 741741
+- **Emergency Services**: 911
+
+### International
+- **UK**: Samaritans - 116 123
+- **Australia**: Lifeline - 13 11 14
+- **India**: AASRA - +91-22-27546669
+
+### Additional Resources
+- **National Alliance on Mental Illness (NAMI)**: 1-800-950-NAMI
+- **Mental Health America**: mhanational.org
+- **Crisis Text Line**: crisistextline.org
+
+## 🙏 Acknowledgments
+
+- **Transformers**: Hugging Face for state-of-the-art NLP models
+- **Mental Health Community**: Advisors and beta testers
+- **Research**: Based on latest mental health AI research
+- **Open Source**: Built on amazing open-source technologies
+
+## 📞 Support
+
+For technical support, feature requests, or questions:
+- **GitHub Issues**: Open an issue for bug reports
+- **Discussions**: Use GitHub Discussions for questions
+- **Email**: support@mentalhealthchatbot.org (planned)
+- **Documentation**: See `docs/` folder for detailed guides
+
+---
+
+**⚠️ Important Disclaimer**: This chatbot is designed to provide support and resources but is not a replacement for professional mental health care. If you are experiencing a mental health crisis, please contact emergency services or a mental health professional immediately.
+
+**Built with ❤️ for mental health awareness and support.**
