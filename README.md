@@ -217,7 +217,72 @@ Run the evaluation script to generate updated performance metrics and visualizat
 python model_evaluation.py
 ```
 
-## 📊 Monitoring & Analytics
+## � Research Documentation & Reproducibility
+
+This repository includes detailed documentation of the key architectural innovations used in the mental healthcare chatbot. For researchers and developers interested in reproducing the reported results:
+
+### Core Contributions
+
+#### 1. **Cultural Attention Layer**
+- Mathematical formulation with fusion equations
+- Integration guide for transformer architectures
+- PyTorch implementation scaffold
+- **See**: [Cultural Attention Documentation](docs/Cultural_Attention.md) | [Architecture Diagram](#file:CA_MA.png)
+
+#### 2. **Metaphor-Aware Transformer**
+- Gating mechanism for metaphor-aware fusion
+- Detailed equations and architectural integration points
+- Example implementation with initialization guidelines
+- **See**: [Metaphor-Aware Transformer Documentation](docs/Metaphor_Aware_Transformer.md) | [Architecture Diagram](#file:CA_MA.png)
+
+### Reproducibility Information
+
+To ensure full reproducibility of reported results:
+
+1. **Environment & Versions**
+   - See [REPRODUCIBILITY.md](REPRODUCIBILITY.md) for exact package versions
+   - Python 3.9+, PyTorch 1.13.1, Transformers 4.35.0
+   - Install with: `pip install -r requirements.txt`
+
+2. **Commit Hash**
+   - All reported results correspond to commit hash: **4bbd93ce388bca6b6e97cc3c48272d993f4c6f93**
+   - Use `git checkout 4bbd93ce388bca6b6e97cc3c48272d993f4c6f93` to access the exact codebase
+
+3. **Model Implementation Files**
+   - Working PyTorch implementations: `models/cultural_attention.py` and `models/metaphor_aware_transformer.py`
+   - These provide scaffolding code matching the mathematical formulations in the docs
+   - Unit tests included in each file
+
+4. **Verification Steps**
+   ```bash
+   # Install exact dependencies for reproducibility
+   python -m venv venv_reproduce
+   source venv_reproduce/bin/activate
+   pip install -r requirements.txt
+   
+   # Verify Cultural Attention implementation
+   python models/cultural_attention.py
+   
+   # Verify Metaphor-Aware Transformer implementation
+   python models/metaphor_aware_transformer.py
+   
+   # Run full evaluation pipeline
+   python model_evaluation.py
+   ```
+
+### Technical Details
+
+The manuscript describes two key innovations for mental healthcare NLP:
+
+**Cultural Attention Layer** combines standard scaled-dot-product attention with learned cultural context vectors:
+$$A_{ij} = \frac{Q_i K_j^\top}{\sqrt{d_k}} + \lambda(Q_i \cdot cW_C)^\top$$
+
+**Metaphor-Aware Transformer** fuses transformer outputs with metaphor-aware features via learned gates:
+$$y_i = g_i \odot y_i^{(base)} + (1-g_i) \odot f_m(r_i)$$
+
+See documentation files for complete mathematical derivations and integration algorithms.
+
+## �📊 Monitoring & Analytics
 
 ### Built-in Analytics
 - **Session Metrics**: Duration, message count, sentiment trends

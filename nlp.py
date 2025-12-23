@@ -16,6 +16,51 @@ import nltk
 from textblob import TextBlob
 from sklearn.metrics.pairwise import cosine_similarity
 
+"""nlp.py
+
+Module-level documentation for the repository's advanced NLP components.
+
+Includes precise descriptions of the proposed Cultural Attention Layer and
+the Metaphor-Aware Transformer used in the manuscript. The equations below
+are provided to enable reproducibility and to indicate where to place the
+corresponding modules inside a standard transformer backbone.
+
+1) Cultural Attention Layer
+     - Let $X=[x_1,\dots,x_n]$ be token embeddings and $c$ a cultural embedding.
+     - Compute standard projections:
+         $Q=XW_Q,\;K=XW_K,\;V=XW_V$.
+     - Base scaled-dot-product logits:
+         $A_{ij}^{(base)}=\frac{Q_iK_j^\top}{\sqrt{d_k}}$.
+     - Cultural bias term (project cultural embedding into key space):
+         $c'=cW_C,\;B_{ij}=\lambda\,(Q_i\cdot c')$ where $\lambda$ is learned.
+     - Combined logits and attention output:
+         $A_{ij}=A_{ij}^{(base)}+B_{ij},\;\alpha_{ij}=\mathrm{softmax}_j(A_{ij}),\;z_i=\sum_j\alpha_{ij}V_j$.
+
+     - Gated fusion variant: $g_i=\sigma(W_g[Q_i;c'])$,
+         $z_i=g_i\odot z_i^{(att)}+(1-g_i)\odot C_f(c)$ where $C_f$ is an MLP.
+
+     Integration: Add as an additional attention head or modify per-head logits
+     inside the transformer's multi-head attention. Ensure $c$ is supplied
+     per-example (metadata, demographic embedding, or auxiliary encoder).
+
+2) Metaphor-Aware Transformer
+     - Let $T(\cdot)$ denote a standard transformer block output.
+     - Compute base output: $y_i^{(base)}=T(x_i)$.
+     - Project metaphor embedding $m$ and compute residual:
+         $m'=mW_M,\;r_i=\tanh(W_r[x_i;m'])$.
+     - Gate and fuse:
+         $g_i=\sigma(W_g[y_i^{(base)};r_i]+b_g),\;y_i=g_i\odot y_i^{(base)}+(1-g_i)\odot f_m(r_i)$.
+
+     Integration: Apply fusion after the transformer's feed-forward sub-layer or
+     as an extra residual branch before layer normalization. Initialize gates
+     near 1.0 to preserve pretrained behaviour initially.
+
+Pseudocode and separate markdown docs (`docs/Cultural_Attention.md` and
+`docs/Metaphor_Aware_Transformer.md`) are included in the repository. For
+reproducibility, consult `REPRODUCIBILITY.md` which lists the commit hash and
+package versions used for the experiments.
+"""
+
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
